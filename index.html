@@ -12,30 +12,41 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <style>
 html,body{height:100%;margin:0;background:#101318}
+body.spin{background:#f3f5f8} body.spin.dark{background:#0e131a}
 .sp{height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;font-family:"Malgun Gothic","Apple SD Gothic Neo",sans-serif;color:#e7ebf1}
-.lg{width:min(56vw,260px);height:auto;filter:drop-shadow(0 0 14px rgba(255,42,31,.35));animation:glow 1.6s ease-in-out infinite alternate}
+.lg{width:min(56vw,260px);height:auto}
 .bt{font-size:clamp(18px,5.2vw,24px);font-weight:700;letter-spacing:-.01em;line-height:1;transform:skewX(-7deg);transform-origin:left bottom}
 .msg{font-size:13px;color:#8b95a5;min-height:1.5em;text-align:center;padding:0 24px}
-@keyframes glow{from{opacity:.78}to{opacity:1}}
-@media (prefers-reduced-motion:reduce){.lg{animation:none}}
+/* 새로고침용: 점 4개가 도는 모양 (하나는 빨강) */
+.dots{display:none;position:relative;width:44px;height:44px;animation:spin 1s linear infinite;will-change:transform}
+.dots i{position:absolute;width:10px;height:10px;border-radius:50%;background:#9aa4b4}
+.dots i:nth-child(1){left:17px;top:0;background:#d7191f} .dots i:nth-child(2){right:0;top:17px} .dots i:nth-child(3){left:17px;bottom:0} .dots i:nth-child(4){left:0;top:17px}
+body.spin .lg,body.spin .bt{display:none} body.spin .dots{display:block}
+@keyframes spin{to{transform:rotate(360deg)}}
 </style>
 <script>if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});</script>
 </head>
 <body>
+<script>
+/* 처음 열 때는 로고, 새로고침(화면을 아래로 당김)일 때는 도는 점 */
+var OSH_MODE = (function(){ var r = false; try{ var n = performance.getEntriesByType("navigation")[0]; r = !!(n && n.type === "reload") || sessionStorage.getItem("osh-started") === "1"; sessionStorage.setItem("osh-started", "1"); }catch(e){} return r ? "spin" : "logo"; })();
+if(OSH_MODE === "spin"){ document.body.className = "spin"; try{ if(localStorage.getItem("osh-mode") === "dark") document.body.className += " dark"; }catch(e){} }
+</script>
 <div class="sp" role="status" aria-label="법령 통합 조회를 여는 중">
-<svg class="lg" viewBox="0 0 108.0 36" role="img" aria-label="SAFE — 법령 통합 조회"><title>SAFE — 법령 통합 조회</title><g transform="skewX(-7) translate(2.2 0)" fill="#ff2a1f"><path d="M6.60 2.20 L8.80 0.00 L18.20 0.00 L20.40 2.20 L18.20 4.40 L8.80 4.40Z"/><path d="M6.60 18.00 L8.80 15.80 L18.20 15.80 L20.40 18.00 L18.20 20.20 L8.80 20.20Z"/><path d="M6.60 33.80 L8.80 31.60 L18.20 31.60 L20.40 33.80 L18.20 36.00 L8.80 36.00Z"/><path d="M5.70 3.10 L7.90 5.30 L7.90 14.90 L5.70 17.10 L3.50 14.90 L3.50 5.30Z"/><path d="M21.30 3.10 L23.50 5.30 L23.50 14.90 L21.30 17.10 L19.10 14.90 L19.10 5.30Z" opacity="0.13"/><path d="M5.70 18.90 L7.90 21.10 L7.90 30.70 L5.70 32.90 L3.50 30.70 L3.50 21.10Z" opacity="0.13"/><path d="M21.30 18.90 L23.50 21.10 L23.50 30.70 L21.30 32.90 L19.10 30.70 L19.10 21.10Z"/><path d="M33.60 2.20 L35.80 0.00 L45.20 0.00 L47.40 2.20 L45.20 4.40 L35.80 4.40Z"/><path d="M33.60 18.00 L35.80 15.80 L45.20 15.80 L47.40 18.00 L45.20 20.20 L35.80 20.20Z"/><path d="M33.60 33.80 L35.80 31.60 L45.20 31.60 L47.40 33.80 L45.20 36.00 L35.80 36.00Z" opacity="0.13"/><path d="M32.70 3.10 L34.90 5.30 L34.90 14.90 L32.70 17.10 L30.50 14.90 L30.50 5.30Z"/><path d="M48.30 3.10 L50.50 5.30 L50.50 14.90 L48.30 17.10 L46.10 14.90 L46.10 5.30Z"/><path d="M32.70 18.90 L34.90 21.10 L34.90 30.70 L32.70 32.90 L30.50 30.70 L30.50 21.10Z"/><path d="M48.30 18.90 L50.50 21.10 L50.50 30.70 L48.30 32.90 L46.10 30.70 L46.10 21.10Z"/><path d="M60.60 2.20 L62.80 0.00 L72.20 0.00 L74.40 2.20 L72.20 4.40 L62.80 4.40Z"/><path d="M60.60 18.00 L62.80 15.80 L72.20 15.80 L74.40 18.00 L72.20 20.20 L62.80 20.20Z"/><path d="M60.60 33.80 L62.80 31.60 L72.20 31.60 L74.40 33.80 L72.20 36.00 L62.80 36.00Z" opacity="0.13"/><path d="M59.70 3.10 L61.90 5.30 L61.90 14.90 L59.70 17.10 L57.50 14.90 L57.50 5.30Z"/><path d="M75.30 3.10 L77.50 5.30 L77.50 14.90 L75.30 17.10 L73.10 14.90 L73.10 5.30Z" opacity="0.13"/><path d="M59.70 18.90 L61.90 21.10 L61.90 30.70 L59.70 32.90 L57.50 30.70 L57.50 21.10Z"/><path d="M75.30 18.90 L77.50 21.10 L77.50 30.70 L75.30 32.90 L73.10 30.70 L73.10 21.10Z" opacity="0.13"/><path d="M87.60 2.20 L89.80 0.00 L99.20 0.00 L101.40 2.20 L99.20 4.40 L89.80 4.40Z"/><path d="M87.60 18.00 L89.80 15.80 L99.20 15.80 L101.40 18.00 L99.20 20.20 L89.80 20.20Z"/><path d="M87.60 33.80 L89.80 31.60 L99.20 31.60 L101.40 33.80 L99.20 36.00 L89.80 36.00Z"/><path d="M86.70 3.10 L88.90 5.30 L88.90 14.90 L86.70 17.10 L84.50 14.90 L84.50 5.30Z"/><path d="M102.30 3.10 L104.50 5.30 L104.50 14.90 L102.30 17.10 L100.10 14.90 L100.10 5.30Z" opacity="0.13"/><path d="M86.70 18.90 L88.90 21.10 L88.90 30.70 L86.70 32.90 L84.50 30.70 L84.50 21.10Z"/><path d="M102.30 18.90 L104.50 21.10 L104.50 30.70 L102.30 32.90 L100.10 30.70 L100.10 21.10Z" opacity="0.13"/></g></svg>
+<svg class="lg" viewBox="0 0 108.0 36" role="img" aria-label="SAFE — 법령 통합 조회"><title>SAFE — 법령 통합 조회</title><g transform="skewX(-7) translate(2.2 0)" fill="#d7191f"><path d="M6.60 2.20 L8.80 0.00 L18.20 0.00 L20.40 2.20 L18.20 4.40 L8.80 4.40Z"/><path d="M6.60 18.00 L8.80 15.80 L18.20 15.80 L20.40 18.00 L18.20 20.20 L8.80 20.20Z"/><path d="M6.60 33.80 L8.80 31.60 L18.20 31.60 L20.40 33.80 L18.20 36.00 L8.80 36.00Z"/><path d="M5.70 3.10 L7.90 5.30 L7.90 14.90 L5.70 17.10 L3.50 14.90 L3.50 5.30Z"/><path d="M21.30 3.10 L23.50 5.30 L23.50 14.90 L21.30 17.10 L19.10 14.90 L19.10 5.30Z" opacity="0.13"/><path d="M5.70 18.90 L7.90 21.10 L7.90 30.70 L5.70 32.90 L3.50 30.70 L3.50 21.10Z" opacity="0.13"/><path d="M21.30 18.90 L23.50 21.10 L23.50 30.70 L21.30 32.90 L19.10 30.70 L19.10 21.10Z"/><path d="M33.60 2.20 L35.80 0.00 L45.20 0.00 L47.40 2.20 L45.20 4.40 L35.80 4.40Z"/><path d="M33.60 18.00 L35.80 15.80 L45.20 15.80 L47.40 18.00 L45.20 20.20 L35.80 20.20Z"/><path d="M33.60 33.80 L35.80 31.60 L45.20 31.60 L47.40 33.80 L45.20 36.00 L35.80 36.00Z" opacity="0.13"/><path d="M32.70 3.10 L34.90 5.30 L34.90 14.90 L32.70 17.10 L30.50 14.90 L30.50 5.30Z"/><path d="M48.30 3.10 L50.50 5.30 L50.50 14.90 L48.30 17.10 L46.10 14.90 L46.10 5.30Z"/><path d="M32.70 18.90 L34.90 21.10 L34.90 30.70 L32.70 32.90 L30.50 30.70 L30.50 21.10Z"/><path d="M48.30 18.90 L50.50 21.10 L50.50 30.70 L48.30 32.90 L46.10 30.70 L46.10 21.10Z"/><path d="M60.60 2.20 L62.80 0.00 L72.20 0.00 L74.40 2.20 L72.20 4.40 L62.80 4.40Z"/><path d="M60.60 18.00 L62.80 15.80 L72.20 15.80 L74.40 18.00 L72.20 20.20 L62.80 20.20Z"/><path d="M60.60 33.80 L62.80 31.60 L72.20 31.60 L74.40 33.80 L72.20 36.00 L62.80 36.00Z" opacity="0.13"/><path d="M59.70 3.10 L61.90 5.30 L61.90 14.90 L59.70 17.10 L57.50 14.90 L57.50 5.30Z"/><path d="M75.30 3.10 L77.50 5.30 L77.50 14.90 L75.30 17.10 L73.10 14.90 L73.10 5.30Z" opacity="0.13"/><path d="M59.70 18.90 L61.90 21.10 L61.90 30.70 L59.70 32.90 L57.50 30.70 L57.50 21.10Z"/><path d="M75.30 18.90 L77.50 21.10 L77.50 30.70 L75.30 32.90 L73.10 30.70 L73.10 21.10Z" opacity="0.13"/><path d="M87.60 2.20 L89.80 0.00 L99.20 0.00 L101.40 2.20 L99.20 4.40 L89.80 4.40Z"/><path d="M87.60 18.00 L89.80 15.80 L99.20 15.80 L101.40 18.00 L99.20 20.20 L89.80 20.20Z"/><path d="M87.60 33.80 L89.80 31.60 L99.20 31.60 L101.40 33.80 L99.20 36.00 L89.80 36.00Z"/><path d="M86.70 3.10 L88.90 5.30 L88.90 14.90 L86.70 17.10 L84.50 14.90 L84.50 5.30Z"/><path d="M102.30 3.10 L104.50 5.30 L104.50 14.90 L102.30 17.10 L100.10 14.90 L100.10 5.30Z" opacity="0.13"/><path d="M86.70 18.90 L88.90 21.10 L88.90 30.70 L86.70 32.90 L84.50 30.70 L84.50 21.10Z"/><path d="M102.30 18.90 L104.50 21.10 L104.50 30.70 L102.30 32.90 L100.10 30.70 L100.10 21.10Z" opacity="0.13"/></g></svg>
 <div class="bt">법령 통합 조회</div>
+<div class="dots" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
 <div class="msg" id="msg"></div>
 </div>
 <script>
-/* 로고를 잠시 보여 주는 동안 앱 본체(app.js)를 미리 받아 두고, 열리면 머리말 로고로 이어지는 전환을 합니다 */
+/* 시작 화면을 보여 주는 동안 앱 본체(app.js)를 미리 받아 두고, 열리면 이어지는 전환을 합니다 */
 (function(){
-  var MIN = 900, msg = document.getElementById("msg");
+  var MIN = OSH_MODE === "spin" ? 300 : 900, msg = document.getElementById("msg");
   var slow = setTimeout(function(){ msg.textContent = "여는 데 시간이 걸리고 있습니다. 인터넷 연결을 확인해 주세요."; }, 15000);
   Promise.all([
     fetch("app.js").then(function(r){ if(!r.ok) throw new Error("app.js를 찾지 못했습니다 (" + r.status + ")"); return r.text(); }),
     new Promise(function(ok){ setTimeout(ok, MIN); })
-  ]).then(function(v){ clearTimeout(slow); try{ sessionStorage.setItem("osh-intro", "1"); }catch(e){} (0, eval)(v[0]); })
+  ]).then(function(v){ clearTimeout(slow); try{ sessionStorage.setItem("osh-intro", OSH_MODE); }catch(e){} (0, eval)(v[0]); })
     .catch(function(e){ clearTimeout(slow); msg.textContent = "앱을 열지 못했습니다. " + (e && e.message || "") + " 인터넷 연결을 확인한 뒤 다시 열어 주세요."; });
 })();
 </script>
