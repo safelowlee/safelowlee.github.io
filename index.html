@@ -20,7 +20,6 @@ html,body{height:100%;margin:0;background:#101318}
 @media (prefers-reduced-motion:reduce){.lg{animation:none}}
 </style>
 <script>if("serviceWorker" in navigator) navigator.serviceWorker.register("sw.js").catch(function(){});</script>
-<script src="app.js" defer></script>
 </head>
 <body>
 <div class="sp" role="status" aria-label="법령 통합 조회를 여는 중">
@@ -28,6 +27,17 @@ html,body{height:100%;margin:0;background:#101318}
 <div class="bt">법령 통합 조회</div>
 <div class="msg" id="msg"></div>
 </div>
-<script>setTimeout(function(){var m=document.getElementById("msg");if(m)m.textContent="여는 데 시간이 걸리고 있습니다. 인터넷 연결을 확인해 주세요.";},15000);</script>
+<script>
+/* 로고를 최소 2초 보여 주고, 그동안 앱 본체(app.js)를 미리 받아 둡니다 */
+(function(){
+  var MIN = 2000, msg = document.getElementById("msg");
+  var slow = setTimeout(function(){ msg.textContent = "여는 데 시간이 걸리고 있습니다. 인터넷 연결을 확인해 주세요."; }, 15000);
+  Promise.all([
+    fetch("app.js").then(function(r){ if(!r.ok) throw new Error("app.js를 찾지 못했습니다 (" + r.status + ")"); return r.text(); }),
+    new Promise(function(ok){ setTimeout(ok, MIN); })
+  ]).then(function(v){ clearTimeout(slow); (0, eval)(v[0]); })
+    .catch(function(e){ clearTimeout(slow); msg.textContent = "앱을 열지 못했습니다. " + (e && e.message || "") + " 인터넷 연결을 확인한 뒤 다시 열어 주세요."; });
+})();
+</script>
 </body>
 </html>
