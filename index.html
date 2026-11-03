@@ -40,6 +40,7 @@ if(OSH_MODE === "spin"){ document.body.className = "spin"; try{ if(localStorage.
 <div class="msg" id="msg"></div>
 <p class="disc">법령을 빠르게 찾아보기 위한 참고용입니다.<br>중요한 판단은 국가법령정보센터 원문으로 한 번 더 확인하세요.</p>
 </div>
+<script>try{if(localStorage.getItem("osh-lang")==="en"){document.querySelector(".bt").textContent="Integrated Law Search";document.querySelector(".disc").innerHTML="For quick reference only.<br>For important decisions, always check the original text at law.go.kr.";}}catch(e){}</script>
 <script>
 /* 시작 화면을 보여 주는 동안 앱 본체(app.js)를 미리 받아 두고, 열리면 이어지는 전환을 합니다 */
 (function(){
